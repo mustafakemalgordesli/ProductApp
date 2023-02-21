@@ -1,5 +1,6 @@
 ﻿using Application.Dto;
 using Application.Features.ProductFeatures.Commands.CreateProduct;
+using Application.Features.ProductFeatures.Commands.UpdateProduct;
 using Application.Features.ProductFeatures.Queries.GetAllProducts;
 using Application.Features.ProductFeatures.Queries.GetById;
 using Application.Interfaces.Repository;
@@ -32,7 +33,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody] CreateProductCommand command)
+        public async Task<IActionResult> Insert([FromBody]CreateProductCommand command)
         {
             var viewModel = await mediator.Send(command);
             return Ok(viewModel);
@@ -43,8 +44,18 @@ namespace WebAPI.Controllers
         {
             var query = new GetByIdQuery(id);
             var response = await mediator.Send(query);
+            return Ok(response);
+        }
 
-            return Ok();
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody]UpdateProductCommand command)
+        {
+            if(command?.Id == null)
+            {
+                return BadRequest(new { Success = false, Message = "Id cannot be null"});
+            }
+            var response = await mediator.Send(command);
+            return Ok(response);
         }
     }
 }
