@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.Repository
 {
-    public interface IGenericRepository<T> where T: BaseEntity
+    public interface IGenericRepository<T> : IGenericRepositoryAsync<T> where T: BaseEntity
     {
         List<T> FindAllByCondition(Expression<Func<T, bool>> expression);
         void Update(T entity);

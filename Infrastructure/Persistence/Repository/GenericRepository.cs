@@ -11,27 +11,27 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repository
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    public class GenericRepository<T> : GenericRepositoryAsync<T>, IGenericRepository<T> where T : BaseEntity
     {
-        ApplicationDbContext dbContext;
-        public GenericRepository(ApplicationDbContext dbContext)
+        public GenericRepository(ApplicationDbContext dbContext) : base(dbContext) 
         {
-            this.dbContext = dbContext;
         }
 
         public virtual List<T> FindAllByCondition(Expression<Func<T, bool>> expression)
         {
-            return this.dbContext.Set<T>()
+            return dbContext.Set<T>()
                 .Where(expression).AsNoTracking().ToList();
         }
 
         public void Update(T entity)
         {
-            this.dbContext.Set<T>().Update(entity);
+            dbContext.Set<T>().Update(entity);
+            dbContext.SaveChanges();
         }
         public void Delete(T entity)
         {
-            this.dbContext.Set<T>().Remove(entity);
+            dbContext.Set<T>().Remove(entity);
+            dbContext.SaveChanges();
         }
     }
 }
