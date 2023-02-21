@@ -1,5 +1,6 @@
 ﻿using Application.Dto;
 using Application.Features.ProductFeatures.Commands.CreateProduct;
+using Application.Features.ProductFeatures.Commands.DeleteProduct;
 using Application.Features.ProductFeatures.Commands.UpdateProduct;
 using Application.Features.ProductFeatures.Queries.GetAllProducts;
 using Application.Features.ProductFeatures.Queries.GetById;
@@ -14,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "v1")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -56,6 +59,19 @@ namespace WebAPI.Controllers
             }
             var response = await mediator.Send(command);
             return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute]int id)
+        {
+            if (id == null || id <= 0)
+            {
+                return BadRequest(new { Success = false, Message = "Id cannot be null or zero" });
+            }
+
+            var command = new DeleteProductCommand(id);
+            var response = await mediator.Send(command);
+            return Ok(new { Success = response });
         }
     }
 }
