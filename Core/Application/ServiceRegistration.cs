@@ -8,6 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using System.Reflection;
+using Application.Features.ProductFeatures.Commands.CreateProduct;
+using Application.Wrappers;
+using Application.Dto;
+using FluentValidation;
+using Application.Behaviors;
+using Application.Features.ProductFeatures.Commands.UpdateProduct;
 
 namespace Application
 {
@@ -17,7 +23,11 @@ namespace Application
         {
             //services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddScoped<IPipelineBehavior<CreateProductCommand, ServiceResponse<ProductViewDto>>, ValidateCreateProductCommandBehavior>();
+            services.AddScoped<IPipelineBehavior<UpdateProductCommand, ServiceResponse<ProductViewDto>>, ValidateUpdateProductCommandBehavior>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }
