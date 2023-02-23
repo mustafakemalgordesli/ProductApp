@@ -14,6 +14,8 @@ using Application.Dto;
 using FluentValidation;
 using Application.Behaviors;
 using Application.Features.ProductFeatures.Commands.UpdateProduct;
+using Application.Features.CategoryFeatures.Commands.CreateCategory;
+using Domain.Entities;
 
 namespace Application
 {
@@ -26,6 +28,7 @@ namespace Application
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddScoped<IPipelineBehavior<CreateProductCommand, ServiceResponse<ProductViewDto>>, ValidateCreateProductCommandBehavior>();
             services.AddScoped<IPipelineBehavior<UpdateProductCommand, ServiceResponse<ProductViewDto>>, ValidateUpdateProductCommandBehavior>();
+            services.AddScoped<IPipelineBehavior<CreateCategoryCommand, ServiceResponse<Category>>, ValidateCreateCategoryCommandBehavior>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
