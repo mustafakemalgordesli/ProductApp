@@ -1,6 +1,7 @@
 ﻿using Application.Features.CategoryFeatures.Commands.CreateCategory;
 using Application.Features.CategoryFeatures.Queries.GetAllCategories;
 using Application.Features.CategoryFeatures.Queries.GetById;
+using Application.Features.CategoryFeatures.Commands.DeleteCategory;
 using Application.Interfaces.Repository;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -41,6 +42,19 @@ namespace WebAPI.Controllers
             var query = new GetByIdQuery(id);
             var response = await mediator.Send(query);
             return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            if (id == null || id <= 0)
+            {
+                return BadRequest(new { Success = false, Message = "Id cannot be null or zero" });
+            }
+
+            var command = new DeleteCategoryCommand(id);
+            var response = await mediator.Send(command);
+            return Ok(new { Success = response });
         }
 
     }
