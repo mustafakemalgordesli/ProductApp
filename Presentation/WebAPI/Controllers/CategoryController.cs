@@ -6,6 +6,7 @@ using Application.Interfaces.Repository;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Application.Features.CategoryFeatures.Commands.UpdateCategory;
 
 namespace WebAPI.Controllers
 {
@@ -55,6 +56,17 @@ namespace WebAPI.Controllers
             var command = new DeleteCategoryCommand(id);
             var response = await mediator.Send(command);
             return Ok(new { Success = response });
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody]UpdateCategoryCommand command)
+        {
+            if (command?.Id == null)
+            {
+                return BadRequest(new { Success = false, Message = "Id cannot be null" });
+            }
+            var response = await mediator.Send(command);
+            return Ok(response);
         }
 
     }

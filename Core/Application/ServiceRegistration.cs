@@ -16,6 +16,7 @@ using Application.Behaviors;
 using Application.Features.ProductFeatures.Commands.UpdateProduct;
 using Application.Features.CategoryFeatures.Commands.CreateCategory;
 using Domain.Entities;
+using Application.Features.CategoryFeatures.Commands.UpdateCategory;
 
 namespace Application
 {
@@ -29,6 +30,7 @@ namespace Application
             services.AddScoped<IPipelineBehavior<CreateProductCommand, ServiceResponse<ProductViewDto>>, ValidateCreateProductCommandBehavior>();
             services.AddScoped<IPipelineBehavior<UpdateProductCommand, ServiceResponse<ProductViewDto>>, ValidateUpdateProductCommandBehavior>();
             services.AddScoped<IPipelineBehavior<CreateCategoryCommand, ServiceResponse<Category>>, ValidateCreateCategoryCommandBehavior>();
+            services.AddScoped<IPipelineBehavior<UpdateCategoryCommand, ServiceResponse<Category>>, ValidateUpdateCategoryCommandBehavior>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
