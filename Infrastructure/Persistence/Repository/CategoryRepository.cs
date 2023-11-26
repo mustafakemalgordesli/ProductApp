@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repository
 {
-    public class CategoryRepository : GenericRepositoryAsync<Category>, ICategoryRepository
+    public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
         public CategoryRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
